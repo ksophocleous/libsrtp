@@ -46,7 +46,7 @@
 #ifndef RAND_SOURCE
 #define RAND_SOURCE
 
-#include "err.h"
+#include "srtp/err.h"
 #include "datatypes.h"
 
 err_status_t

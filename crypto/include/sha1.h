@@ -47,7 +47,7 @@
 #ifndef SHA1_H
 #define SHA1_H
 
-#include "err.h"
+#include "srtp/err.h"
 #ifdef OPENSSL
 #include <openssl/evp.h>
 #include <stdint.h>

@@ -571,7 +571,6 @@ v128_copy_octet_string(v128_t *x, const uint8_t s[16]) {
   x->v8[13] = s[13];
   x->v8[14] = s[14];
   x->v8[15] = s[15];
-
 }
 
 #ifndef DATATYPES_USE_MACROS /* little functions are not macros */

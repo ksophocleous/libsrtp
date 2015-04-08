@@ -89,7 +89,10 @@ unsigned int srtp_get_version ()
     /*
      * Parse the autotools generated version 
      */
+#pragma warning(push)
+#pragma warning(disable:4996)
     parse_rv = sscanf(SRTP_VERSION, "%u.%u.%u", &major, &minor, &micro);
+#pragma warning(pop)
     if (parse_rv != 3) {
 	/*
 	 * We're expected to parse all 3 version levels.
@@ -1064,9 +1067,12 @@ srtp_unprotect_aead (srtp_ctx_t *ctx, srtp_stream_ctx_t *stream, int delta,
      * the tag size.  It must always be at least as large
      * as the tag length.
      */
+#pragma warning(push)
+#pragma warning(disable:4018)
     if (enc_octet_len < tag_len) {
         return err_status_cipher_fail;
     }
+#pragma warning(pop)
 
     /*
      * update the key usage limit, and check it to make sure that we
@@ -2842,9 +2848,12 @@ srtp_unprotect_rtcp(srtp_t ctx, void *srtcp_hdr, int *pkt_octet_len) {
   /* check the packet length - it must contain at least a full RTCP
      header, an auth tag (if applicable), and the SRTCP encrypted flag
      and 31-bit index value */
+#pragma warning(push)
+#pragma warning(disable:4018)
   if (*pkt_octet_len < (octets_in_rtcp_header + tag_len + sizeof(srtcp_trailer_t))) {
     return err_status_bad_param;
   }
+#pragma warning(pop)
 
   /*
    * Check if this is an AEAD stream (GCM mode).  If so, then dispatch

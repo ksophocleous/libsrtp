@@ -4,7 +4,13 @@ srtp_protect
 srtp_unprotect
 srtp_create
 srtp_add_stream
+srtp_profile_get_master_key_length
+srtp_profile_get_master_salt_length
+crypto_policy_set_from_profile_for_rtp
+crypto_policy_set_from_profile_for_rtcp
+append_salt_to_key
 srtp_remove_stream
+srtp_shutdown
 crypto_policy_set_rtp_default
 crypto_policy_set_rtcp_default
 crypto_policy_set_aes_cm_128_hmac_sha1_32
@@ -29,8 +35,6 @@ crypto_get_random
 rand_source_init
 rand_source_get_octet_string
 rand_source_deinit
-x917_prng_init
-x917_prng_get_octet_string
 ctr_prng_init
 ctr_prng_get_octet_string
 cipher_output

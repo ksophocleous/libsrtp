@@ -48,7 +48,7 @@
 #endif
 
 #include "aes.h"
-#include "err.h"
+#include "srtp/err.h"
 
 /* 
  * we use the tables T0, T1, T2, T3, and T4 to compute AES, and 
@@ -1717,7 +1717,6 @@ aes_inv_final_round(v128_t *state, const v128_t *round_key) {
 
   v128_xor_eq(state, round_key);
 }
-
 
 #elif CPU_RISC
 

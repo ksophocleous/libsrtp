@@ -48,9 +48,9 @@
 
 #include "datatypes.h"          
 #include "rdbx.h"               /* for xtd_seq_num_t */
-#include "err.h"                /* for error codes  */
-#include "crypto.h"		/* for cipher_type_id_t */
-#include "crypto_types.h"	/* for values of cipher_type_id_t */
+#include "srtp/err.h"                /* for error codes  */
+#include "srtp/crypto.h"		/* for cipher_type_id_t */
+#include "srtp/crypto_types.h"	/* for values of cipher_type_id_t */
 
 
 /**

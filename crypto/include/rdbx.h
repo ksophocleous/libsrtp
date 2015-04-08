@@ -12,7 +12,7 @@
 #define RDBX_H
 
 #include "datatypes.h"
-#include "err.h"
+#include "srtp/err.h"
 
 /* #define ROC_TEST */  
 

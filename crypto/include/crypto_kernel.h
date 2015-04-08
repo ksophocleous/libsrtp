@@ -52,10 +52,10 @@
 #include "auth.h"
 #include "cryptoalg.h"
 #include "stat.h"
-#include "err.h"
-#include "crypto_types.h"
+#include "srtp/err.h"
+#include "srtp/crypto_types.h"
 #include "key.h"
-#include "crypto.h"
+#include "srtp/crypto.h"
 
 /*
  * crypto_kernel_state_t defines the possible states:
