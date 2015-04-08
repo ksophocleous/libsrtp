@@ -4,6 +4,9 @@ old
 old?
 *.pc
 
+# build directories
+/build*
+
 # Object files
 *.o
 

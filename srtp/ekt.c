@@ -44,7 +44,7 @@
 
 
 #include "srtp_priv.h"
-#include "err.h"
+#include "srtp/err.h"
 #include "ekt.h"
 
 extern debug_module_t mod_srtp;

@@ -46,7 +46,7 @@
 #define KEY_H
 
 #include "rdbx.h"   /* for xtd_seq_num_t */
-#include "err.h"
+#include "srtp/err.h"
 
 typedef struct key_limit_ctx_t *key_limit_t;
 

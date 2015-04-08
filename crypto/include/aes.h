@@ -48,7 +48,7 @@
 
 #include "datatypes.h"
 #include "gf2_8.h"
-#include "err.h"
+#include "srtp/err.h"
 
 /* aes internals */
 

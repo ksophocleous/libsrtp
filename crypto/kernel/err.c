@@ -46,7 +46,7 @@
     #include <config.h>
 #endif
 
-#include "err.h"
+#include "srtp/err.h"
 
 #ifdef ERR_REPORTING_SYSLOG
 # ifdef HAVE_SYSLOG_H

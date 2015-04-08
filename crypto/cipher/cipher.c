@@ -49,7 +49,7 @@
 #endif
 
 #include "cipher.h"
-#include "crypto_types.h"
+#include "srtp/crypto_types.h"
 #include "rand_source.h"        /* used in invertibiltiy tests        */
 #include "alloc.h"              /* for crypto_alloc(), crypto_free()  */
 

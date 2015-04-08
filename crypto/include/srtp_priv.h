@@ -46,11 +46,11 @@
 #define SRTP_PRIV_H
 
 #include "config.h"
-#include "srtp.h"
+#include "srtp/srtp.h"
 #include "rdbx.h"
 #include "rdb.h"
 #include "integers.h"
-#include "crypto.h"
+#include "srtp/crypto.h"
 #include "cipher.h"
 #include "auth.h"
 #include "aes.h"

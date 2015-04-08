@@ -48,7 +48,7 @@
 #define STAT_H
 
 #include "datatypes.h"       /* for uint8_t                       */
-#include "err.h"             /* for err_status_t                  */
+#include "srtp/err.h"             /* for err_status_t                  */
 #include "rand_source.h"     /* for rand_source_func_t definition */
 
 err_status_t
