@@ -10,17 +10,18 @@ include(CheckSymbolExists)
 include(CheckTypeSize)
 include(CheckLibraryExists)
 
-option(OPTION_ENABLE_DEBUGGING "Enable Debugging" OFF)
-option(OPTION_ENABLE_ERROR_TO_STDOUT "Enable errors to stdout" OFF)
-option(OPTION_GENERIC_AESICM "Enable to use ISMAcryp code" OFF)
-option(OPTION_USE_OPENSSL "Enable usage of openssl" OFF)
-option(OPTION_USE_X86_ASSEMBLY "Enable use of X86 assembly" ON)
-option(OPTION_USE_GDOI "Enable use of GDOI" OFF)
-option(OPTION_BUILD_FOR_KERNEL "Build for kernel context" OFF)
-option(OPTION_BUILD_FOR_LINUX_KERNEL "Build for linux kernel context" OFF)
-option(OPTION_USE_SYSLOG "Enable syslog logging" OFF)
-option(OPTION_ENABLE_TESTS "Enable building of tests" OFF)
-option(OPTION_BUILD_SHARED_LIB "Enable building of the shared library" ON)
+option(LIBSRTP_ENABLE_DEBUGGING "Enable Debugging" OFF)
+option(LIBSRTP_ENABLE_ERROR_TO_STDOUT "Enable errors to stdout" OFF)
+option(LIBSRTP_GENERIC_AESICM "Enable to use ISMAcryp code" OFF)
+option(LIBSRTP_USE_OPENSSL "Enable usage of openssl" OFF)
+option(LIBSRTP_USE_X86_ASSEMBLY "Enable use of X86 assembly" ON)
+option(LIBSRTP_USE_GDOI "Enable use of GDOI" OFF)
+option(LIBSRTP_BUILD_FOR_KERNEL "Build for kernel context" OFF)
+option(LIBSRTP_BUILD_FOR_LINUX_KERNEL "Build for linux kernel context" OFF)
+option(LIBSRTP_USE_SYSLOG "Enable syslog logging" OFF)
+option(LIBSRTP_ENABLE_TESTS "Enable building of tests" OFF)
+option(LIBSRTP_BUILD_SHARED_LIB "Enable building of the shared library" ON)
+option(LIBSRTP_GEN_INSTALL_TARGETS "Enable generation of install targets" ON)
 
 if(MSVC)
 	foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
@@ -36,7 +37,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-if(OPTION_ENABLE_TESTS)
+if(LIBSRTP_ENABLE_TESTS)
 	enable_testing()
 endif()
 
@@ -53,24 +54,24 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
 	set(DEV_URANDOM "/dev/urandom")
 endif()
 
-if(TRUE OR OPTION_ENABLE_DEBUGGING)
+if(TRUE OR LIBSRTP_ENABLE_DEBUGGING)
 	set(ENABLE_DEBUGGING 1)
 endif()
 
-if(NOT "${OPTION_ENABLE_ERRORS_TO_FILE}" STREQUAL "")
+if(NOT "${LIBSRTP_ENABLE_ERRORS_TO_FILE}" STREQUAL "")
 	set(ERR_REPORTING_FILE ON)
 	set(USE_ERR_REPORTING_FILE ON)
-	set(ERROR_REPORTING_FILE_NAME "${OPTION_ENABLE_ERRORS_TO_FILE}")
+	set(ERROR_REPORTING_FILE_NAME "${LIBSRTP_ENABLE_ERRORS_TO_FILE}")
 else()
 	set(USE_ERR_REPORTING_FILE OFF)
 	set(ERR_REPORTING_FILE OFF)
 endif()
 
-if(TRUE OR OPTION_ENABLE_ERROR_TO_STDOUT)
+if(TRUE OR LIBSRTP_ENABLE_ERROR_TO_STDOUT)
 	set(ERR_REPORTING_STDOUT ON)
 endif()
 
-set(GENERIC_AESICM ${OPTION_GENERIC_AESICM})
+set(GENERIC_AESICM ${LIBSRTP_GENERIC_AESICM})
 
 CHECK_INCLUDE_FILES(arpa/inet.h HAVE_ARPA_INET_H)
 CHECK_INCLUDE_FILES(byteswap.h HAVE_BYTESWAP_H)
@@ -111,22 +112,22 @@ CHECK_SYMBOL_EXISTS(usleep "unistd.h" HAVE_USLEEP)
 # if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 # endif()
 
-set(HAVE_X86 ${OPTION_USE_X86_ASSEMBLY})
+set(HAVE_X86 ${LIBSRTP_USE_X86_ASSEMBLY})
 
 CHECK_LIBRARY_EXISTS(socket socket "" HAVE_LIBSOCKET)
 
-set(OPENSSL ${OPTION_USE_OPENSSL})
-if(OPTION_USE_OPENSSL)
+set(OPENSSL ${LIBSRTP_USE_OPENSSL})
+if(LIBSRTP_USE_OPENSSL)
 	find_package(OpenSSL)
 endif()
 
 CHECK_TYPE_SIZE("unsigned long" SIZEOF_UNSIGNED_LONG)
 CHECK_TYPE_SIZE("unsigned long long" SIZEOF_UNSIGNED_LONG_LONG)
 
-set(SRTP_GDOI ${OPTION_USE_GDOI})
-set(SRTP_KERNEL ${OPTION_BUILD_FOR_KERNEL})
-set(SRTP_KERNEL_LINUX ${OPTION_BUILD_FOR_LINUX_KERNEL})
-set(USE_SYSLOG ${OPTION_USE_SYSLOG})
+set(SRTP_GDOI ${LIBSRTP_USE_GDOI})
+set(SRTP_KERNEL ${LIBSRTP_BUILD_FOR_KERNEL})
+set(SRTP_KERNEL_LINUX ${LIBSRTP_BUILD_FOR_LINUX_KERNEL})
+set(USE_SYSLOG ${LIBSRTP_USE_SYSLOG})
 
 TEST_BIG_ENDIAN(WORDS_BIGENDIAN)
 
@@ -175,7 +176,7 @@ else()
 	list(APPEND srcs "crypto/rng/rand_source.c")
 endif()
 
-if(OPTION_USE_OPENSSL)
+if(LIBSRTP_USE_OPENSSL)
 	list(APPEND srcs
 		"crypto/cipher/aes_icm_ossl.c"
 		"crypto/cipher/aes_gcm_ossl.c"
@@ -255,13 +256,13 @@ if(WIN32)
 	list(APPEND win32_def "srtp.def")
 endif()
 
-if(OPTION_USE_OPENSSL)
+if(LIBSRTP_USE_OPENSSL)
 	list(APPEND system_libs "${OPENSSL_LIBRARIES}")
 endif()
 
 message(STATUS "system_libs: ${system_libs}")
 
-if(OPTION_BUILD_SHARED_LIB)
+if(LIBSRTP_BUILD_SHARED_LIB)
 	add_library(libsrtp SHARED ${srcs} ${priv_inc} ${pub_inc} ${win32_def})
 	set_target_properties(libsrtp PROPERTIES
 		PUBLIC_HEADER "${pub_inc}"
@@ -273,11 +274,13 @@ if(OPTION_BUILD_SHARED_LIB)
 		IMPORT_SUFFIX "_implib${CMAKE_IMPORT_LIBRARY_SUFFIX}"
 		)
 	target_link_libraries(libsrtp ${system_libs})
-	install(TARGETS libsrtp
-		PUBLIC_HEADER DESTINATION "include/srtp"
-		LIBRARY DESTINATION lib COMPONENT lib
-		ARCHIVE DESTINATION lib COMPONENT lib
-		RUNTIME DESTINATION bin COMPONENT bin)
+	if(LIBSRTP_GEN_INSTALL_TARGETS)
+		install(TARGETS libsrtp
+			PUBLIC_HEADER DESTINATION "include/srtp"
+			LIBRARY DESTINATION lib COMPONENT lib
+			ARCHIVE DESTINATION lib COMPONENT lib
+			RUNTIME DESTINATION bin COMPONENT bin)
+	endif()
 endif()
 
 add_library(libsrtp_static STATIC ${srcs} ${priv_inc} ${pub_inc})
@@ -290,12 +293,14 @@ set_target_properties(libsrtp_static PROPERTIES
 	IMPORT_PREFIX "")
 target_link_libraries(libsrtp_static ${system_libs})
 
-install(TARGETS libsrtp_static
-	PUBLIC_HEADER DESTINATION "include/srtp"
-	LIBRARY DESTINATION lib COMPONENT lib
-	ARCHIVE DESTINATION lib COMPONENT lib
-	RUNTIME DESTINATION bin COMPONENT bin)
+if(LIBSRTP_GEN_INSTALL_TARGETS)
+	install(TARGETS libsrtp_static
+		PUBLIC_HEADER DESTINATION "include/srtp"
+		LIBRARY DESTINATION lib COMPONENT lib
+		ARCHIVE DESTINATION lib COMPONENT lib
+		RUNTIME DESTINATION bin COMPONENT bin)
+endif()
 
-if(OPTION_ENABLE_TESTS)
+if(LIBSRTP_ENABLE_TESTS)
 	add_subdirectory(test)
 endif()
