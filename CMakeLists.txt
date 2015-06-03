@@ -22,6 +22,7 @@ option(LIBSRTP_USE_SYSLOG "Enable syslog logging" OFF)
 option(LIBSRTP_ENABLE_TESTS "Enable building of tests" OFF)
 option(LIBSRTP_BUILD_SHARED_LIB "Enable building of the shared library" ON)
 option(LIBSRTP_GEN_INSTALL_TARGETS "Enable generation of install targets" ON)
+OPTION(LIBSRTP_USE_STATIC_LINKING "Use static linking of msvc runtime" OFF)
 
 if(MSVC)
 	foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
@@ -36,6 +37,18 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+# statically link msvc runtime
+if(MSVC AND LIBSRTP_USE_STATIC_LINKING)
+	foreach(flag_var
+		CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE
+		CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO)
+
+		if(${flag_var} MATCHES "/MD")
+			string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+		endif(${flag_var} MATCHES "/MD")
+	endforeach(flag_var)
+endif()
 
 if(LIBSRTP_ENABLE_TESTS)
 	enable_testing()
