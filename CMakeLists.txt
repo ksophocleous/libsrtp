@@ -37,6 +37,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_DEBUG_POSTFIX "d")
 
 # statically link msvc runtime
 if(MSVC AND LIBSRTP_USE_STATIC_LINKING)
@@ -248,8 +249,9 @@ list(APPEND pub_inc
 	"include/srtp/err.h")
 
 list(APPEND pub_inc_dirs
-	"${CMAKE_CURRENT_SOURCE_DIR}/include"
-	"${CMAKE_CURRENT_BINARY_DIR}/include")
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
+	"$<INSTALL_INTERFACE:include>")
 
 list(APPEND priv_inc_dirs
 	"${pub_inc_dirs}"
@@ -289,6 +291,7 @@ if(LIBSRTP_BUILD_SHARED_LIB)
 	target_link_libraries(libsrtp ${system_libs})
 	if(LIBSRTP_GEN_INSTALL_TARGETS)
 		install(TARGETS libsrtp
+			EXPORT ${CMAKE_PROJECT_NAME}Config
 			PUBLIC_HEADER DESTINATION "include/srtp"
 			LIBRARY DESTINATION lib COMPONENT lib
 			ARCHIVE DESTINATION lib COMPONENT lib
@@ -308,10 +311,14 @@ target_link_libraries(libsrtp_static ${system_libs})
 
 if(LIBSRTP_GEN_INSTALL_TARGETS)
 	install(TARGETS libsrtp_static
+		EXPORT ${CMAKE_PROJECT_NAME}Config
 		PUBLIC_HEADER DESTINATION "include/srtp"
 		LIBRARY DESTINATION lib COMPONENT lib
 		ARCHIVE DESTINATION lib COMPONENT lib
 		RUNTIME DESTINATION bin COMPONENT bin)
+
+	install(EXPORT ${CMAKE_PROJECT_NAME}Config
+		DESTINATION lib/cmake)
 endif()
 
 if(LIBSRTP_ENABLE_TESTS)
