@@ -20,7 +20,7 @@ option(LIBSRTP_BUILD_FOR_KERNEL "Build for kernel context" OFF)
 option(LIBSRTP_BUILD_FOR_LINUX_KERNEL "Build for linux kernel context" OFF)
 option(LIBSRTP_USE_SYSLOG "Enable syslog logging" OFF)
 option(LIBSRTP_ENABLE_TESTS "Enable building of tests" OFF)
-option(LIBSRTP_BUILD_SHARED_LIB "Enable building of the shared library" ON)
+option(BUILD_SHARED_LIB "Enable building of the shared library" OFF)
 option(LIBSRTP_GEN_INSTALL_TARGETS "Enable generation of install targets" ON)
 OPTION(LIBSRTP_USE_STATIC_LINKING "Use static linking of msvc runtime" OFF)
 
@@ -277,46 +277,25 @@ endif()
 
 message(STATUS "system_libs: ${system_libs}")
 
-if(LIBSRTP_BUILD_SHARED_LIB)
-	add_library(libsrtp SHARED ${srcs} ${priv_inc} ${pub_inc} ${win32_def})
-	set_target_properties(libsrtp PROPERTIES
-		PUBLIC_HEADER "${pub_inc}"
-		COMPILE_DEFINITIONS "${priv_definitions}"
-		INCLUDE_DIRECTORIES "${priv_inc_dirs}"
-		INTERFACE_INCLUDE_DIRECTORIES "${pub_inc_dirs}"
-		PREFIX ""
-		IMPORT_PREFIX ""
-		IMPORT_SUFFIX "_implib${CMAKE_IMPORT_LIBRARY_SUFFIX}"
-		)
-	target_link_libraries(libsrtp ${system_libs})
-	if(LIBSRTP_GEN_INSTALL_TARGETS)
-		install(TARGETS libsrtp
-			EXPORT ${CMAKE_PROJECT_NAME}Config
-			PUBLIC_HEADER DESTINATION "include/srtp"
-			LIBRARY DESTINATION lib COMPONENT lib
-			ARCHIVE DESTINATION lib COMPONENT lib
-			RUNTIME DESTINATION bin COMPONENT bin)
-	endif()
-endif()
-
-add_library(libsrtp_static STATIC ${srcs} ${priv_inc} ${pub_inc})
-set_target_properties(libsrtp_static PROPERTIES
+add_library(libsrtp ${srcs} ${priv_inc} ${pub_inc} ${win32_def})
+set_target_properties(libsrtp PROPERTIES
 	PUBLIC_HEADER "${pub_inc}"
 	COMPILE_DEFINITIONS "${priv_definitions}"
 	INCLUDE_DIRECTORIES "${priv_inc_dirs}"
 	INTERFACE_INCLUDE_DIRECTORIES "${pub_inc_dirs}"
 	PREFIX ""
-	IMPORT_PREFIX "")
-target_link_libraries(libsrtp_static ${system_libs})
+	IMPORT_PREFIX ""
+	IMPORT_SUFFIX "_implib${CMAKE_IMPORT_LIBRARY_SUFFIX}"
+	)
+target_link_libraries(libsrtp ${system_libs})
 
 if(LIBSRTP_GEN_INSTALL_TARGETS)
-	install(TARGETS libsrtp_static
+	install(TARGETS libsrtp
 		EXPORT ${CMAKE_PROJECT_NAME}Config
 		PUBLIC_HEADER DESTINATION "include/srtp"
 		LIBRARY DESTINATION lib COMPONENT lib
 		ARCHIVE DESTINATION lib COMPONENT lib
 		RUNTIME DESTINATION bin COMPONENT bin)
-
 	install(EXPORT ${CMAKE_PROJECT_NAME}Config
 		DESTINATION lib/cmake)
 endif()
