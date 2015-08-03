@@ -132,7 +132,7 @@ CHECK_LIBRARY_EXISTS(socket socket "" HAVE_LIBSOCKET)
 
 set(OPENSSL ${LIBSRTP_USE_OPENSSL})
 if(LIBSRTP_USE_OPENSSL)
-	find_package(OpenSSL)
+	find_package(openssl CONFIG)
 endif()
 
 CHECK_TYPE_SIZE("unsigned long" SIZEOF_UNSIGNED_LONG)
@@ -272,7 +272,7 @@ if(WIN32)
 endif()
 
 if(LIBSRTP_USE_OPENSSL)
-	list(APPEND system_libs "${OPENSSL_LIBRARIES}")
+	list(APPEND system_libs "libeay32 ssleay32")
 endif()
 
 message(STATUS "system_libs: ${system_libs}")
