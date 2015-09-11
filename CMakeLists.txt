@@ -22,7 +22,7 @@ option(LIBSRTP_USE_SYSLOG "Enable syslog logging" OFF)
 option(LIBSRTP_ENABLE_TESTS "Enable building of tests" OFF)
 option(BUILD_SHARED_LIB "Enable building of the shared library" OFF)
 option(LIBSRTP_GEN_INSTALL_TARGETS "Enable generation of install targets" ON)
-OPTION(LIBSRTP_USE_STATIC_LINKING "Use static linking of msvc runtime" OFF)
+OPTION(MSVC_LINK_STATIC_RUNTIME "Use static linking of msvc runtime" OFF)
 
 if(MSVC)
 	foreach(OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES})
@@ -40,7 +40,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_DEBUG_POSTFIX "d")
 
 # statically link msvc runtime
-if(MSVC AND LIBSRTP_USE_STATIC_LINKING)
+if(MSVC AND MSVC_LINK_STATIC_RUNTIME)
 	foreach(flag_var
 		CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE
 		CMAKE_C_FLAGS_MINSIZEREL CMAKE_C_FLAGS_RELWITHDEBINFO)
